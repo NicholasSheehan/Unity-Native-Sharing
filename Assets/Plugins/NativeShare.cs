@@ -22,6 +22,7 @@ public class NativeShare : MonoBehaviour {
         Share(text,screenShotPath,"");
     }
 
+    //Note: Android share only uses the text and screenshot path.
 	public void Share(string shareText, string imagePath, string url, string subject = "")
 	{
 #if UNITY_ANDROID
