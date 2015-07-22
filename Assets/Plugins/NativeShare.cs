@@ -3,27 +3,28 @@ using System.Collections;
 using System.Runtime.InteropServices;
 
 /*
- * NativeShare.cs by Christopher Maire (@DINOSAURSSSSSSS)
- * If you find this useful, please support me by buying one of my games :)
+ * If you find this useful, please support me by buying one of my games.
  * www.chrismaire.com
  * 
- * Android Native sharing by Daniele Olivieri
- * 		http://www.daniel4d.com/blog/sharing-image-unity-android/
+ * If you don't...submit a fix :)
+ * https://github.com/ChrisMaire/unity-native-sharing
  * 
- * iOS Native sharing by Tushar Sonu Lambole 
- * 		http://tusharlambole.blogspot.com/2014/06/ios-native-plugin-for-unity3d.html
  */
 
 public class NativeShare : MonoBehaviour {
-	public string ScreenshotName;
+	public string ScreenshotName = "screenshot.png";
 
-	public void Share(string shareText)
+    public void ShareScreenshotWithText(string text)
+    {
+        string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
+        Application.CaptureScreenshot(ScreenshotName);
+
+        Share(text,screenShotPath,"");
+    }
+
+	public void Share(string shareText, string imagePath, string url, string subject = "")
 	{
-		string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
-
-		Application.CaptureScreenshot(ScreenshotName);
-
-		#if UNITY_ANDROID
+#if UNITY_ANDROID
 		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
 		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
 		
@@ -41,9 +42,9 @@ public class NativeShare : MonoBehaviour {
 		AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, shareString);
 		currentActivity.Call("startActivity", jChooser);
 #elif UNITY_IOS
-		CallSocialShareAdvanced(shareText, shareText, "www.twitter.com", screenShotPath);
+		CallSocialShareAdvanced(shareText, subject, url, screenShotPath);
 #else
-		Debug.Log("No sharing set up");
+		Debug.Log("No sharing set up for this platform.");
 #endif
 	}
 
@@ -68,15 +69,14 @@ public class NativeShare : MonoBehaviour {
 	
 	public static void CallSocialShare(string title, string message)
 	{
-		//IPHONE - Display the UIViewController
 		ConfigStruct conf = new ConfigStruct();
 		conf.title  = title;
 		conf.message = message;
 		showAlertMessage(ref conf);
 	}
+
 	public static void CallSocialShareAdvanced(string defaultTxt, string subject, string url, string img)
 	{
-		//IPHONE - Display the UIViewController
 		SocialSharingStruct conf = new SocialSharingStruct();
 		conf.text = defaultTxt; 
 		conf.url = url;

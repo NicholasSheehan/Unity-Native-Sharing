@@ -10,7 +10,7 @@ public class DoShare : MonoBehaviour {
 	
 	void Update () {
 		if (Input.GetButtonDown("Fire1")) {
-			share.Share("Whoa Cool You Shared Some Text");
+            share.ShareScreenshotWithText("Whoa Cool You Shared Some Text");
 		}
 	}
 }

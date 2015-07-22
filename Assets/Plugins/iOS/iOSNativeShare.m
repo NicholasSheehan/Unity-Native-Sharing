@@ -3,17 +3,11 @@
 @implementation iOSNativeShare{
 }
 
-//Grab the Unity3D ViewController (UnityGetGLViewController())
-
-#ifdef UNITY_4_0
-
-//Unity4
+#ifdef UNITY_4_0 || UNITY_5_0
 
 #import "iPhone_View.h"
 
 #else
-
-//Unity3.5
 
 extern UIViewController* UnityGetGLViewController();
 
@@ -91,40 +85,24 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	}
 	if(mImage != NULL && mImage.length > 0){
 		
-		// For image from Web Url
-		
 		if([mImage hasPrefix:@"http"])
-			
 		{
-			
 			NSURL *urlImage = [NSURL URLWithString:mImage];
-			
-			// NSLog(@"Enter urlImage");
 			
 			NSData *dataImage = [NSData dataWithContentsOfURL:urlImage];
 			
-			// NSLog(@"Enter data %d",dataImage.length);
-			
 			UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
 			
-			// NSLog(@"Enter data %f",imageFromUrl.size.height);
-			
 			[items addObject:imageFromUrl];
-			
 		}else{
 			NSFileManager *fileMgr = [NSFileManager defaultManager];
 			if([fileMgr fileExistsAtPath:mImage]){
 				
 				NSData *dataImage = [NSData dataWithContentsOfFile:mImage];
 				
-				// NSLog(@"Enter data %d",dataImage.length);
-				
 				UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
 				
-				// NSLog(@"Enter data %f",imageFromUrl.size.height);
-				
 				[items addObject:imageFromUrl];
-				
 			}else{
 				ShowAlertMessage(@"Error", @"Cannot find image");
 			}

@@ -10,6 +10,7 @@ sysinfo.txt
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
+UnityVS/
 [Ee]xported[Oo]bj/
 /*.userprefs
 /*.csproj
