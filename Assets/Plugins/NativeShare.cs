@@ -3,12 +3,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 
 /*
- * If you find this useful, please support me by buying one of my games.
- * www.chrismaire.com
- * 
- * If you don't...submit a fix :)
- * https://github.com/ChrisMaire/unity-native-sharing
- * 
+ * https://github.com/ChrisMaire/unity-native-sharing 
  */
 
 public class NativeShare : MonoBehaviour {
