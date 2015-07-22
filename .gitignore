@@ -1,0 +1,8 @@
+﻿*.idea*
+*_ReSharper.Caches*
+[Tt]emp/
+[Tt]emp.meta
+[Oo]bj/
+[Oo]bj.meta
+[Bb]uild
+[Ll]ibrary/

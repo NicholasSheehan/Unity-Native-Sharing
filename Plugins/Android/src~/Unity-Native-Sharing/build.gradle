@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+
+ext.outputDir = "..\\.."
+ext.outputName = "com.UnityNative.Sharing-v1.0.0"
+
+android {
+    compileSdkVersion 26
+
+    sourceSets{
+        main{
+            java{
+                exclude 'com/unity3d/player/UnityPlayerActivity.java'
+            }
+        }
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.0"
+        project.archivesBaseName = "${outputName}"
+    }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name == "build") {
+            def copyAarTask = "copyBuiltReleaseAar"
+
+            tasks.create(copyAarTask, Copy) {
+                from "${buildDir}\\outputs\\aar\\${outputName}-release.aar"
+                into "${outputDir}"
+                rename "${outputName}-release", "${outputName}"
+            }
+
+            task.finalizedBy(copyAarTask)
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:26.1.0'
+    compileOnly files('UnityEngine.jar')
+}

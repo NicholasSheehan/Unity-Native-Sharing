@@ -1,0 +1,22 @@
+{
+  "name": "com.unitynative.sharing",
+  "version": "1.0.0",
+  "displayName": "Unity-Native-Sharing",
+  "description": "A Unity plugin to open native sharing dialogs on iOS and Android",
+  "unity": "2018.3",
+  "dependencies": {
+    "com.unity.modules.screencapture": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0"
+  },
+  "keywords": [
+    "Plugin",
+    "Native",
+    "Android",
+    "iOS",
+    "Sharing"
+  ],
+  "author": {
+    "name": "Nicholas Sheehan",
+    "url": "https://github.com/NicholasSheehan/Unity-Native-Sharing"
+  }
+}
