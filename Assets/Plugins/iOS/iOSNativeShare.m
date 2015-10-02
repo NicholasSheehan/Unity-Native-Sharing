@@ -59,13 +59,13 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	
 	
 	
-	NSString *mText = [[NSString alloc] initWithUTF8String:text];
+    NSString *mText = text ? [[NSString alloc] initWithUTF8String:text] : nil;
 	
-	NSString *mUrl = [[NSString alloc] initWithUTF8String:url];
+    NSString *mUrl = url ? [[NSString alloc] initWithUTF8String:url] : nil;
 	
-	NSString *mImage = [[NSString alloc] initWithUTF8String:image];
+    NSString *mImage = image ? [[NSString alloc] initWithUTF8String:image] : nil;
 	
-	NSString *mSubject = [[NSString alloc] initWithUTF8String:subject];
+    NSString *mSubject = subject ? [[NSString alloc] initWithUTF8String:subject] : nil;
 	
 	
 	NSMutableArray *items = [NSMutableArray new];
@@ -89,11 +89,15 @@ void ShowAlertMessage (NSString *title, NSString *message){
 		{
 			NSURL *urlImage = [NSURL URLWithString:mImage];
 			
-			NSData *dataImage = [NSData dataWithContentsOfURL:urlImage];
-			
-			UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
-			
-			[items addObject:imageFromUrl];
+            NSError *error = nil;
+            NSData *dataImage = [NSData dataWithContentsOfURL:urlImage options:0 error:&error];
+            
+            if (!error) {
+                UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
+                [items addObject:imageFromUrl];
+            } else {
+                ShowAlertMessage(@"Error", @"Cannot load image");
+            }
 		}else{
 			NSFileManager *fileMgr = [NSFileManager defaultManager];
 			if([fileMgr fileExistsAtPath:mImage]){
@@ -111,7 +115,11 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	
 	UIActivityViewController *activity = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:Nil];
 	
-	[activity setValue:mSubject forKey:@"subject"];
+    if(mSubject != NULL) {
+        [activity setValue:mSubject forKey:@"subject"];
+    } else {
+        [activity setValue:@"" forKey:@"subject"];
+    }
 	
 	UIViewController *rootViewController = UnityGetGLViewController();
 	[rootViewController presentViewController:activity animated:YES completion:Nil];
