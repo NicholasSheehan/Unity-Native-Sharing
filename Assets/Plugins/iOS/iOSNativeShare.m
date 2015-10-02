@@ -89,11 +89,15 @@ void ShowAlertMessage (NSString *title, NSString *message){
 		{
 			NSURL *urlImage = [NSURL URLWithString:mImage];
 			
-			NSData *dataImage = [NSData dataWithContentsOfURL:urlImage];
-			
-			UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
-			
-			[items addObject:imageFromUrl];
+            NSError *error = nil;
+            NSData *dataImage = [NSData dataWithContentsOfURL:urlImage options:0 error:&error];
+            
+            if (!error) {
+                UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
+                [items addObject:imageFromUrl];
+            } else {
+                ShowAlertMessage(@"Error", @"Cannot load image");
+            }
 		}else{
 			NSFileManager *fileMgr = [NSFileManager defaultManager];
 			if([fileMgr fileExistsAtPath:mImage]){
