@@ -59,13 +59,13 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	
 	
 	
-	NSString *mText = [[NSString alloc] initWithUTF8String:text];
+    NSString *mText = text ? [[NSString alloc] initWithUTF8String:text] : nil;
 	
-	NSString *mUrl = [[NSString alloc] initWithUTF8String:url];
+    NSString *mUrl = url ? [[NSString alloc] initWithUTF8String:url] : nil;
 	
-	NSString *mImage = [[NSString alloc] initWithUTF8String:image];
+    NSString *mImage = image ? [[NSString alloc] initWithUTF8String:image] : nil;
 	
-	NSString *mSubject = [[NSString alloc] initWithUTF8String:subject];
+    NSString *mSubject = subject ? [[NSString alloc] initWithUTF8String:subject] : nil;
 	
 	
 	NSMutableArray *items = [NSMutableArray new];
@@ -111,7 +111,11 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	
 	UIActivityViewController *activity = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:Nil];
 	
-	[activity setValue:mSubject forKey:@"subject"];
+    if(mSubject != NULL) {
+        [activity setValue:mSubject forKey:@"subject"];
+    } else {
+        [activity setValue:@"" forKey:@"subject"];
+    }
 	
 	UIViewController *rootViewController = UnityGetGLViewController();
 	[rootViewController presentViewController:activity animated:YES completion:Nil];

@@ -37,7 +37,7 @@ public class NativeShare : MonoBehaviour {
 		AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject);
 		currentActivity.Call("startActivity", jChooser);
 #elif UNITY_IOS
-		CallSocialShareAdvanced(shareText, subject, url, screenShotPath);
+		CallSocialShareAdvanced(shareText, subject, url, imagePath);
 #else
 		Debug.Log("No sharing set up for this platform.");
 #endif
