@@ -122,9 +122,17 @@ void ShowAlertMessage (NSString *title, NSString *message){
     }
 	
 	UIViewController *rootViewController = UnityGetGLViewController();
-	[rootViewController presentViewController:activity animated:YES completion:Nil];
-	
-	return self;
+    //if iPhone
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+          [rootViewController presentViewController:activity animated:YES completion:Nil];
+    }
+    //if iPad
+    else {
+        // Change Rect to position Popover
+        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:activity];
+        [popup presentPopoverFromRect:CGRectMake(rootViewController.view.frame.size.width/2, rootViewController.view.frame.size.height/4, 0, 0)inView:rootViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    return self;
 }
 
 # pragma mark - C API
