@@ -3,6 +3,8 @@ A Unity plugin to open native sharing dialogs on iOS and Android, primarily for 
 
 To use, copy the iOSNativeShare.h and iOSNativeShare.m files to Assets/Plugins/iOS and NativeShare.cs to Assets/Plugins, then call the Share method in NativeShare.cs. See NativeShare.cs for details. For Android, you'll need to have Write Access set to External(SDCard) under Android Build Settings/Other Settings.
 
+Note that Unity screenshots are run asynchronously and as such you will need to check that the file has been written, or put a delay between capturing the screenshot and sharing it using a coroutine. Otherwise you will likely end up trying to access a file that does not yet exist or will access a previous version of the screenshot.
+
 This plugin combines code from:
 
 Android Native sharing by Daniele Olivieri
