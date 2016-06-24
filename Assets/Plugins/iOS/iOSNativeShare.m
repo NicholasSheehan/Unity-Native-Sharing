@@ -98,7 +98,18 @@ void ShowAlertMessage (NSString *title, NSString *message){
             } else {
                 ShowAlertMessage(@"Error", @"Cannot load image");
             }
-		}else{
+        }
+        else if ( [self isStringValideBase64:mImage]){
+            NSData* imageBase64Data = [[NSData alloc]initWithBase64Encoding:mImage];
+            UIImage* image = [UIImage imageWithData:imageBase64Data];
+            if (image!= nil){
+                [items addObject:image];
+            }
+            else{
+                ShowAlertMessage(@"Error", @"Cannot load image");
+            }
+        }
+        else{
 			NSFileManager *fileMgr = [NSFileManager defaultManager];
 			if([fileMgr fileExistsAtPath:mImage]){
 				
@@ -133,6 +144,15 @@ void ShowAlertMessage (NSString *title, NSString *message){
         [popup presentPopoverFromRect:CGRectMake(rootViewController.view.frame.size.width/2, rootViewController.view.frame.size.height/4, 0, 0)inView:rootViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
     return self;
+}
+
+-(BOOL) isStringValideBase64:(NSString*)string{
+    
+    NSString *regExPattern = @"^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$";
+    
+    NSRegularExpression *regEx = [[NSRegularExpression alloc] initWithPattern:regExPattern options:NSRegularExpressionCaseInsensitive error:nil];
+    NSUInteger regExMatches = [regEx numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    return regExMatches != 0;
 }
 
 # pragma mark - C API
