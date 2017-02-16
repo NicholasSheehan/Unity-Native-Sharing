@@ -11,18 +11,22 @@ public class NativeShare : MonoBehaviour {
 
     public void ShareScreenshotWithText(string text)
     {
+	string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
+  	File.Delete(screenShotPath);
+	    
         Application.CaptureScreenshot(ScreenshotName);
 
-        StartCoroutine(delayedShare(text));
+        StartCoroutine(delayedShare(screenShotPath, text));
     }
 
     //CaptureScreenshot runs asynchronously, so you'll need to either capture the screenshot early and wait a fixed time
     //for it to save, or set a unique image name and check if the file has been created yet before sharing.
-    IEnumerator delayedShare(string text)
+    IEnumerator delayedShare(string screenShotPath, string text)
     {
-        yield return new WaitForSeconds(0.25f);
-
-        string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
+        while(!File.Exists(screenShotPath)) {
+    	    yield return new WaitForSeconds(.05f);
+        }
+        
         Share(text, screenShotPath, "");
     }
 
