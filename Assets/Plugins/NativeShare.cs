@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.IO;
 
 /*
  * https://github.com/ChrisMaire/unity-native-sharing
@@ -11,9 +12,9 @@ public class NativeShare : MonoBehaviour {
 
     public void ShareScreenshotWithText(string text)
     {
-	string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
-  	File.Delete(screenShotPath);
-	    
+        string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
+        if(File.Exists(screenShotPath)) File.Delete(screenShotPath);
+
         Application.CaptureScreenshot(ScreenshotName);
 
         StartCoroutine(delayedShare(screenShotPath, text));
