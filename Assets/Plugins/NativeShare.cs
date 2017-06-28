@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿#if UNITY_IOS
 using System.Runtime.InteropServices;
-using System.IO;
+#else
+using UnityEngine;
+#endif
 
 /*
  * https://github.com/ChrisMaire/unity-native-sharing
@@ -12,7 +13,7 @@ public static class NativeShare {
 	public static void Share(string body, string imagePath, string url, string subject = "", string mimeType = "text/html")
 	{
 #if UNITY_ANDROID
-		ShareAndroid(body, subject, url, imagePath);
+		ShareAndroid(body, subject, url, imagePath, mimeType);
 #elif UNITY_IOS
 		ShareIOS(body, subject, url, imagePath);
 #else
@@ -69,8 +70,7 @@ public static class NativeShare {
 		showAlertMessage(ref conf);
 	}
 
-
-	public static void CallSocialShareAdvanced(string body, string subject, string url, string imagePath)
+	public static void ShareIOS(string body, string subject, string url, string imagePath)
 	{
 		SocialSharingStruct conf = new SocialSharingStruct();
 		conf.text = body;
