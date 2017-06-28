@@ -1,4 +1,6 @@
-﻿#if UNITY_IOS
+﻿#define UNITY_ANDROID
+
+#if UNITY_IOS
 using System.Runtime.InteropServices;
 #else
 using UnityEngine;
@@ -24,22 +26,27 @@ public static class NativeShare {
 #if UNITY_ANDROID
 	public static void ShareAndroid(string body, string subject, string url, string imagePath, string mimeType)
 	{
-		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+		using (AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent"))
+		using (AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent"))
+		{
+			using (intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND")))
+			{ }
+			using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+			using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath))
+			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("setType", mimeType))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body))
+			{ }
 
-		intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
-		AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
-		AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath);
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-		intentObject.Call<AndroidJavaObject>("setType", mimeType);
-
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body);
-
-		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-		AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
-
-		AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject);
-		currentActivity.Call("startActivity", jChooser);
+			using (AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+			using (AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity"))
+			using (AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject))
+			{
+				currentActivity.Call("startActivity", jChooser);
+			}
+		}
 	}
 #endif
 
