@@ -9,9 +9,20 @@ using System.IO;
 
 public static class NativeShare {
 
-	public static void Share(string shareText, string imagePath, string url, string subject = "")
+	public static void Share(string body, string imagePath, string url, string subject = "")
 	{
 #if UNITY_ANDROID
+		ShareAndroid(body, subject, url, imagePath);
+#elif UNITY_IOS
+		ShareIOS(body, subject, url, imagePath);
+#else
+		Debug.Log("No sharing set up for this platform.");
+#endif
+	}
+
+#if UNITY_ANDROID
+	public static void ShareAndroid(string body, string subject, string url, string imagePath)
+	{
 		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
 		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
 
@@ -21,19 +32,15 @@ public static class NativeShare {
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
 		intentObject.Call<AndroidJavaObject>("setType", "image/png");
 
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
+		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body);
 
 		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
 
 		AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject);
 		currentActivity.Call("startActivity", jChooser);
-#elif UNITY_IOS
-		CallSocialShareAdvanced(shareText, subject, url, imagePath);
-#else
-		Debug.Log("No sharing set up for this platform.");
-#endif
 	}
+#endif
 
 #if UNITY_IOS
 	public struct ConfigStruct
@@ -54,7 +61,7 @@ public static class NativeShare {
 
 	[DllImport ("__Internal")] private static extern void showSocialSharing(ref SocialSharingStruct conf);
 
-	public static void CallSocialShare(string title, string message)
+	public static void ShareIOS(string title, string message)
 	{
 		ConfigStruct conf = new ConfigStruct();
 		conf.title  = title;
@@ -63,12 +70,12 @@ public static class NativeShare {
 	}
 
 
-	public static void CallSocialShareAdvanced(string defaultTxt, string subject, string url, string img)
+	public static void CallSocialShareAdvanced(string body, string subject, string url, string imagePath)
 	{
 		SocialSharingStruct conf = new SocialSharingStruct();
-		conf.text = defaultTxt;
+		conf.text = body;
 		conf.url = url;
-		conf.image = img;
+		conf.image = imagePath;
 		conf.subject = subject;
 
 		showSocialSharing(ref conf);
