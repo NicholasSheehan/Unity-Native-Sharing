@@ -9,7 +9,7 @@ using System.IO;
 
 public static class NativeShare {
 
-	public static void Share(string body, string imagePath, string url, string subject = "")
+	public static void Share(string body, string imagePath, string url, string subject = "", string mimeType = "text/html")
 	{
 #if UNITY_ANDROID
 		ShareAndroid(body, subject, url, imagePath);
@@ -21,7 +21,7 @@ public static class NativeShare {
 	}
 
 #if UNITY_ANDROID
-	public static void ShareAndroid(string body, string subject, string url, string imagePath)
+	public static void ShareAndroid(string body, string subject, string url, string imagePath, string mimeType)
 	{
 		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
 		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
@@ -30,7 +30,7 @@ public static class NativeShare {
 		AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
 		AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath);
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-		intentObject.Call<AndroidJavaObject>("setType", "image/png");
+		intentObject.Call<AndroidJavaObject>("setType", mimeType);
 
 		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body);
 

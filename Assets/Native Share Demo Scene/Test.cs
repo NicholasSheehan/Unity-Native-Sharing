@@ -28,6 +28,6 @@ public class Test : MonoBehaviour {
     	    yield return new WaitForSeconds(.05f);
         }
 
-		NativeShare.Share(text, screenShotPath, "");
+		NativeShare.Share(text, screenShotPath, "", "", "image/png");
     }
 }
