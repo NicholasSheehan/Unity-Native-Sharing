@@ -1,4 +1,5 @@
-﻿#if UNITY_IOS
+﻿#define UNITY_ANDROID
+#if UNITY_IOS
 using System.Runtime.InteropServices;
 #else
 using UnityEngine;
@@ -36,11 +37,22 @@ public static class NativeShare {
 			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body))
 			{ }
 
-			// attach extra files (pictures, pdf, etc.)
-			using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
-			using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath))
-			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject))
-			{ }
+			if (!string.IsNullOrEmpty(url))
+			{
+				// attach url
+				using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+				using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", url))
+				using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject))
+				{ }
+			}
+			else if (!string.IsNullOrEmpty(imagePath))
+			{
+				// attach extra files (pictures, pdf, etc.)
+				using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+				using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath))
+				using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject))
+				{ }
+			}
 
 			// finally start application
 			using (AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
