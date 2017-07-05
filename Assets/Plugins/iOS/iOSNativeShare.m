@@ -46,12 +46,12 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	
 }
 
-+(id) withText:(char*)text withURL:(char*)url withImage:(char*)image withSubject:(char*)subject{
++(id) withText:(char*)text withFilePaths:(char*)filePaths withSubject:(char*)subject{
 	
-	return [[iOSNativeShare alloc] initWithText:text withURL:url withImage:image withSubject:subject];
+	return [[iOSNativeShare alloc] initWithText:text withFilePaths:filePaths withSubject:subject];
 }
 
--(id) initWithText:(char*)text withURL:(char*)url withImage:(char*)image withSubject:(char*)subject{
+-(id) initWithText:(char*)text withFilePaths:(char*)filePaths withSubject:(char*)subject{
 	
 	self = [super init];
 	
@@ -61,12 +61,10 @@ void ShowAlertMessage (NSString *title, NSString *message){
 	
     NSString *mText = text ? [[NSString alloc] initWithUTF8String:text] : nil;
 	
-    NSString *mUrl = url ? [[NSString alloc] initWithUTF8String:url] : nil;
-	
-    NSString *mImage = image ? [[NSString alloc] initWithUTF8String:image] : nil;
-	
     NSString *mSubject = subject ? [[NSString alloc] initWithUTF8String:subject] : nil;
 	
+    NSString *mfilePath = filePaths ? [[NSString alloc] initWithUTF8String:filePaths] : nil;
+    
 	
 	NSMutableArray *items = [NSMutableArray new];
 	
@@ -76,50 +74,50 @@ void ShowAlertMessage (NSString *title, NSString *message){
 		
 	}
 	
-	if(mUrl != NULL && mUrl.length > 0){
-		
-		NSURL *formattedURL = [NSURL URLWithString:mUrl];
-		
-		[items addObject:formattedURL];
-		
-	}
-	if(mImage != NULL && mImage.length > 0){
-		
-		if([mImage hasPrefix:@"http"])
-		{
-			NSURL *urlImage = [NSURL URLWithString:mImage];
+	if(mfilePath != NULL && mfilePath.length > 0){
+        NSArray *paths = [mfilePath componentsSeparatedByString:@";"];
+		int i;
+		for (i = 0; i < [paths count]; i++) {
+			NSString *path = [paths objectAtIndex:i];
 			
-            NSError *error = nil;
-            NSData *dataImage = [NSData dataWithContentsOfURL:urlImage options:0 error:&error];
-            
-            if (!error) {
-                UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
-                [items addObject:imageFromUrl];
-            } else {
-                ShowAlertMessage(@"Error", @"Cannot load image");
-            }
-        }
-        else if ( [self isStringValideBase64:mImage]){
-            NSData* imageBase64Data = [[NSData alloc]initWithBase64Encoding:mImage];
-            UIImage* image = [UIImage imageWithData:imageBase64Data];
-            if (image!= nil){
-                [items addObject:image];
-            }
-            else{
-                ShowAlertMessage(@"Error", @"Cannot load image");
-            }
-        }
-        else{
-			NSFileManager *fileMgr = [NSFileManager defaultManager];
-			if([fileMgr fileExistsAtPath:mImage]){
+			if([path hasPrefix:@"http"])
+			{
+				NSURL *url = [NSURL URLWithString:path];
+				NSError *error = nil;
+				NSData *dataImage = [NSData dataWithContentsOfURL:url options:0 error:&error];
 				
-				NSData *dataImage = [NSData dataWithContentsOfFile:mImage];
-				
-				UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
-				
-				[items addObject:imageFromUrl];
-			}else{
-				ShowAlertMessage(@"Error", @"Cannot find image");
+				if (!error) {
+					UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
+					[items addObject:imageFromUrl];
+				} else {
+					[items addObject:url];
+				}
+			}
+			else if ( [self isStringValideBase64:path]){
+                NSData* imageBase64Data = [[NSData alloc]initWithBase64EncodedString:path options:0];
+				UIImage* image = [UIImage imageWithData:imageBase64Data];
+				if (image != nil){
+					[items addObject:image];
+				}
+				else{
+					NSURL *formattedURL = [NSURL fileURLWithPath:path];
+					[items addObject:formattedURL];
+				}
+			}
+			else{
+				NSFileManager *fileMgr = [NSFileManager defaultManager];
+				if([fileMgr fileExistsAtPath:path]){
+					NSData *dataImage = [NSData dataWithContentsOfFile:path];
+					UIImage *imageFromUrl = [UIImage imageWithData:dataImage];
+					if (imageFromUrl != nil){
+						[items addObject:imageFromUrl];
+                    }else{
+						NSURL *formattedURL = [NSURL fileURLWithPath:path];
+						[items addObject:formattedURL];
+					}
+				}else{
+                    ShowAlertMessage(@"Error", [NSString stringWithFormat:@"Cannot find file %@", path]);
+				}
 			}
 		}
 	}
@@ -163,7 +161,7 @@ void showAlertMessage(struct ConfigStruct *confStruct) {
 }
 
 void showSocialSharing(struct SocialSharingStruct *confStruct) {
-	instance = [iOSNativeShare withText:confStruct->text withURL:confStruct->url withImage:confStruct->image withSubject:confStruct->subject];
+	instance = [iOSNativeShare withText:confStruct->text withFilePaths:confStruct->filePaths withSubject:confStruct->subject];
 }
 
 @end

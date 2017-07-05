@@ -13,9 +13,8 @@ struct ConfigStruct {
 
 struct SocialSharingStruct {
     char* text;
-    char* url;
-    char* image;
     char* subject;
+	char* filePaths;
 };
 
 
