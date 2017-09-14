@@ -1,61 +1,114 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿#if UNITY_IOS
 using System.Runtime.InteropServices;
-using System.IO;
-
-/*
- * https://github.com/ChrisMaire/unity-native-sharing
- */
-
-public class NativeShare : MonoBehaviour {
-	public string ScreenshotName = "screenshot.png";
-
-    public void ShareScreenshotWithText(string text)
-    {
-        string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
-        if(File.Exists(screenShotPath)) File.Delete(screenShotPath);
-
-        Application.CaptureScreenshot(ScreenshotName);
-
-        StartCoroutine(delayedShare(screenShotPath, text));
-    }
-
-    //CaptureScreenshot runs asynchronously, so you'll need to either capture the screenshot early and wait a fixed time
-    //for it to save, or set a unique image name and check if the file has been created yet before sharing.
-    IEnumerator delayedShare(string screenShotPath, string text)
-    {
-        while(!File.Exists(screenShotPath)) {
-    	    yield return new WaitForSeconds(.05f);
-        }
-        
-        Share(text, screenShotPath, "");
-    }
-
-	public void Share(string shareText, string imagePath, string url, string subject = "")
-	{
-#if UNITY_ANDROID
-		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
-
-		intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
-		AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
-		AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath);
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-		intentObject.Call<AndroidJavaObject>("setType", "image/png");
-
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
-
-		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-		AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
-
-		AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject);
-		currentActivity.Call("startActivity", jChooser);
-#elif UNITY_IOS
-		CallSocialShareAdvanced(shareText, subject, url, imagePath);
+using System;
 #else
-		Debug.Log("No sharing set up for this platform.");
+using UnityEngine;
 #endif
+
+
+/// <summary>
+/// https://github.com/ChrisMaire/unity-native-sharing
+/// </summary>
+public static class NativeShare
+{
+    /// <summary>
+    /// Shares on file maximum
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="filePath">The path to the attached file</param>
+    /// <param name="url"></param>
+    /// <param name="subject"></param>
+    /// <param name="mimeType"></param>
+    /// <param name="chooser"></param>
+    /// <param name="chooserText"></param>
+    public static void Share(string body, string filePath = null, string url = null, string subject = "", string mimeType = "text/html", bool chooser = false, string chooserText = "Select sharing app")
+    {
+        ShareMultiple(body, new string[] { filePath }, url, subject, mimeType, chooser);
+    }
+
+    /// <summary>
+    /// Shares multiple files at once
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="filePaths">The paths to the attached files</param>
+    /// <param name="url"></param>
+    /// <param name="subject"></param>
+    /// <param name="mimeType"></param>
+    /// <param name="chooser"></param>
+    /// <param name="chooserText"></param>
+    public static void ShareMultiple(string body, string[] filePaths = null, string url = null, string subject = "", string mimeType = "text/html", bool chooser = false, string chooserText = "Select sharing app")
+    {
+#if UNITY_ANDROID
+		ShareAndroid(body, subject, url, filePaths, mimeType, chooser, chooserText);
+#elif UNITY_IOS
+		ShareIOS(body, subject, url, filePaths);
+#else
+        Debug.Log("No sharing set up for this platform.");
+        Debug.Log("Subject: " + subject);
+        Debug.Log("Body: " + body);
+#endif
+    }
+
+#if UNITY_ANDROID
+	public static void ShareAndroid(string body, string subject, string url, string[] filePaths, string mimeType, bool chooser, string chooserText)
+	{
+		using (AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent"))
+		using (AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent"))
+		{
+			using (intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND")))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("setType", mimeType))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_SUBJECT"), subject))
+			{ }
+			using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), body))
+			{ }
+
+			if (!string.IsNullOrEmpty(url))
+			{
+				// attach url
+				using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+				using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", url))
+				using (intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject))
+				{ }
+			}
+			else if (filePaths != null)
+			{
+				// attach extra files (pictures, pdf, etc.)
+				using (AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri"))
+				using (AndroidJavaObject uris = new AndroidJavaObject("java.util.ArrayList"))
+				{
+					for (int i = 0; i < filePaths.Length; i++)
+					{
+						//instantiate the object Uri with the parse of the url's file
+						using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + filePaths[i]))
+						{
+							uris.Call<bool>("add", uriObject);
+						}
+					}
+
+					using (intentObject.Call<AndroidJavaObject>("putParcelableArrayListExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uris))
+					{ }
+				}
+			}
+
+			// finally start application
+			using (AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+			using (AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity"))
+			{
+				if (chooser)
+                {
+                    AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, chooserText);
+                    currentActivity.Call("startActivity", jChooser);
+                }
+                else
+                {
+                    currentActivity.Call("startActivity", intentObject);
+                }
+			}
+		}
 	}
+#endif
 
 #if UNITY_IOS
 	public struct ConfigStruct
@@ -69,14 +122,13 @@ public class NativeShare : MonoBehaviour {
 	public struct SocialSharingStruct
 	{
 		public string text;
-		public string url;
-		public string image;
 		public string subject;
+		public string filePaths;
 	}
 
 	[DllImport ("__Internal")] private static extern void showSocialSharing(ref SocialSharingStruct conf);
 
-	public static void CallSocialShare(string title, string message)
+	public static void ShareIOS(string title, string message)
 	{
 		ConfigStruct conf = new ConfigStruct();
 		conf.title  = title;
@@ -84,13 +136,16 @@ public class NativeShare : MonoBehaviour {
 		showAlertMessage(ref conf);
 	}
 
-
-	public static void CallSocialShareAdvanced(string defaultTxt, string subject, string url, string img)
+	public static void ShareIOS(string body, string subject, string url, string[] filePaths)
 	{
 		SocialSharingStruct conf = new SocialSharingStruct();
-		conf.text = defaultTxt;
-		conf.url = url;
-		conf.image = img;
+		conf.text = body;
+		string paths = string.Join(";", filePaths);
+		if (string.IsNullOrEmpty(paths))
+			paths = url;
+		else if (!string.IsNullOrEmpty(url))
+			paths += ";" + url;
+		conf.filePaths = paths;
 		conf.subject = subject;
 
 		showSocialSharing(ref conf);
