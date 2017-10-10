@@ -23,7 +23,7 @@ public static class NativeShare
     /// <param name="chooserText"></param>
     public static void Share(string body, string filePath = null, string url = null, string subject = "", string mimeType = "text/html", bool chooser = false, string chooserText = "Select sharing app")
     {
-        ShareMultiple(body, new string[] { filePath }, url, subject, mimeType, chooser);
+        ShareMultiple(body, new string[] { filePath }, url, subject, mimeType, chooser, chooserText);
     }
 
     /// <summary>
