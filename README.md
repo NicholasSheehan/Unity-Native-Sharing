@@ -26,7 +26,7 @@ Unity 2018.3.14f1 or later. Older versions may work, feel free to test!
 Examples can be found at [Unity-Native-Example-Project](https://github.com/NicholasSheehan/Unity-Native-Example-Project)
 
 ## Installation
-#### For `Unity 2018.3` or later (Using OpenUPM)
+#### For `Unity 2018.3` or later (Using OpenUPM) [![openupm](https://img.shields.io/npm/v/com.unitynative.sharing?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.unitynative.sharing/)
 
 This package is available on [OpenUPM](https://openupm.com).  
 You can install it via [openupm-cli](https://github.com/openupm/openupm-cli).
@@ -40,9 +40,9 @@ Add this to the projects `manifest.json`
 "com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing"
 ```
 
-To update the package, change suffix `#{version}` to the target version.
+To update the package, change suffix `#release/{version}` to the target version.
 
-* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing#v1.0.0"`
+* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing#release/v1.0.0"`
 
 Or, use [UpmGitExtension](https://github.com/mob-sakai/UpmGitExtension) to install and update the package.
 
