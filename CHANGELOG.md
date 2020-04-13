@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.2] - 2020-04-13
+### Changed
+- Updated the Android AAR to targetSdk 28 to be more inline with Google's current requirements
+- Updated README.md with updated Android dependency `androidx.appcompat:appcompat:1.1.0`
+- Bumped the version number
+
 ## [1.0.1] - 2020-04-13
 ### Changed
 - Updated README.md with OpenUPM badge

@@ -1,6 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.android.support:support-v4:26.1.0">
+    <androidPackage spec="androidx.appcompat:appcompat:1.1.0">
       <repositories>
         <repository>https://maven.google.com</repository>
       </repositories>

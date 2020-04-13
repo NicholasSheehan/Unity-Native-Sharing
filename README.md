@@ -79,9 +79,9 @@ Slack         | ✔              | ✔            | ✔
 
 ## Platform Notes
 #### Android
-The Android plugin requires `android.support-v4:26.1.0` to run.
+The Android plugin requires `androidx.appcompat:appcompat:1.1.0` to run.
 
-This plugin has support for [Play Services Resolver for Unity](https://github.com/googlesamples/unity-jar-resolver)
+This plugin has support for [Play Services Resolver for Unity](https://github.com/googlesamples/unity-jar-resolver) which will take care of this for you
 
 
 
