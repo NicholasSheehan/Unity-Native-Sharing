@@ -19,6 +19,8 @@ What's New? [CHANGELOG](CHANGELOG.md)
 ### Contribution
 For contributing please read [CONTRIBUTING.md](CONTRIBUTING.md)
 
+Don't worry about getting it 100% right, I can tidy it up as I review
+
 ### System Requirements
 Unity 2018.3.14f1 or later. Older versions may work, feel free to test!
 
@@ -26,6 +28,12 @@ Unity 2018.3.14f1 or later. Older versions may work, feel free to test!
 Examples can be found at [Unity-Native-Example-Project](https://github.com/NicholasSheehan/Unity-Native-Example-Project)
 
 ## Installation
+#### For `Unity 2019.3` or later (Using Unity Package Manager)
+
+![AddPackageFromGitURL](Images~/AddPackageFromGitURL.PNG)
+
+`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.3`
+
 #### For `Unity 2018.3` or later (Using OpenUPM) [![openupm](https://img.shields.io/npm/v/com.unitynative.sharing?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.unitynative.sharing/)
 
 This package is available on [OpenUPM](https://openupm.com).  
@@ -37,14 +45,12 @@ openupm add com.unitynative.sharing
 #### For `Unity 2018.3` or later (Using Unity Package Manager)
 Add this to the projects `manifest.json`
 ```
-"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing"
+"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git"
 ```
 
-To update the package, change suffix `#release/{version}` to the target version.
+To update the package, change suffix `#{version}` to the target version.
 
-* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing#release/v1.0.0"`
-
-Or, use [UpmGitExtension](https://github.com/mob-sakai/UpmGitExtension) to install and update the package.
+* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.3"`
 
 #### For `Unity 2018.2`
 `Unity 2018.2` supports embedded packages.
@@ -76,6 +82,11 @@ Slack         | ✔              | ✔            | ✔
 * Look into video sharing
 * Sharing multiple files
 * Sharing Links w/ Text
+* Add screenshots to make the README look more juicy
+* Create CREDITS.md where contributors can add their names
+* Create COMPATIBILITY.md which will record the compatibility of an app's ability to share
+* Create SHOWREEL.md where games that use the plugin can be shown off
+* Convert the bullet points in the roadmap into GitHub issues so that other developers can pick them up
 
 ## Platform Notes
 #### Android

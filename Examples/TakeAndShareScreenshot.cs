@@ -73,7 +73,7 @@ namespace UnityNative.Sharing.Example
 
             OnFrameAfterScreenshot?.Invoke();
 
-            UnityNativeSharingHelper.ShareScreenshotAndText(text, screenshotPath, true, "Select app to share the screenshot with");
+            UnityNativeSharingHelper.ShareScreenshotAndText(text, screenshotPath, false, "Select App To Share With");
         }
     }
 }

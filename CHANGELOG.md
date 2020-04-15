@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.3] - 2020-04-15
+### Changed
+- Fixed inconsistent share dialog text
+- Sharing a screenshot does not display the share dialog text, this is to show the difference between the options
+- Added more things to the `Roadmap` list in the README.md
+
 ## [1.0.2] - 2020-04-13
 ### Changed
 - Updated the Android AAR to targetSdk 28 to be more inline with Google's current requirements
