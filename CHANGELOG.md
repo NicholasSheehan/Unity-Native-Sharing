@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.4] - 2020-06-25
+### Fixed
+- AAR `AndroidManifest.xml` now used the AndroidX file provider
+
+### Removed
+- Removed the `Roadmap` and converted them all into issues for easier tracking
+
 ## [1.0.3] - 2020-04-15
 ### Changed
 - Fixed inconsistent share dialog text

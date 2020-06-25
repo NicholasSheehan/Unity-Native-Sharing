@@ -32,7 +32,7 @@ Examples can be found at [Unity-Native-Example-Project](https://github.com/Nicho
 
 ![AddPackageFromGitURL](Images~/AddPackageFromGitURL.PNG)
 
-`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.3`
+`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.4`
 
 #### For `Unity 2018.3` or later (Using OpenUPM) [![openupm](https://img.shields.io/npm/v/com.unitynative.sharing?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.unitynative.sharing/)
 
@@ -50,7 +50,7 @@ Add this to the projects `manifest.json`
 
 To update the package, change suffix `#{version}` to the target version.
 
-* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.3"`
+* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.4"`
 
 #### For `Unity 2018.2`
 `Unity 2018.2` supports embedded packages.
@@ -76,17 +76,6 @@ Instagram     | No Text         | No Text      | No Text
 Twitter       | ✔              | ✔            | ✔
 Discord       | ✔              | ✔            | ✔
 Slack         | ✔              | ✔            | ✔
-
-## Roadmap
-* Look into email sharing
-* Look into video sharing
-* Sharing multiple files
-* Sharing Links w/ Text
-* Add screenshots to make the README look more juicy
-* Create CREDITS.md where contributors can add their names
-* Create COMPATIBILITY.md which will record the compatibility of an app's ability to share
-* Create SHOWREEL.md where games that use the plugin can be shown off
-* Convert the bullet points in the roadmap into GitHub issues so that other developers can pick them up
 
 ## Platform Notes
 #### Android
