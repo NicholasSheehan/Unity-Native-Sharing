@@ -2,8 +2,8 @@
     package="com.UnityNative.Sharing">
     <application >
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:name="com.UnityNative.Sharing.UnityNativeSharingFileProvider"
+            android:authorities="${applicationId}.UnityNativeSharing.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

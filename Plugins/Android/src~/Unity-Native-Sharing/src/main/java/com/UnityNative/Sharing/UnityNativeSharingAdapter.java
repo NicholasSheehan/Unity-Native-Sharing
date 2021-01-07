@@ -39,7 +39,7 @@ public class UnityNativeSharingAdapter {
 
         // This will generate a uri based that will get the screenshot we have allowed Android to see.
         // This is done this way to prevent a UriFileException on newer targets of Android
-        Uri imageUri = FileProvider.getUriForFile(unityContext, unityContext.getPackageName() + ".provider", new File(imagePath));
+        Uri imageUri = FileProvider.getUriForFile(unityContext, unityContext.getPackageName() + ".UnityNativeSharing.provider", new File(imagePath));
 
         intent.putExtra(Intent.EXTRA_STREAM, imageUri);
 

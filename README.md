@@ -38,7 +38,7 @@ Examples can be found at [Unity-Native-Example-Project](https://github.com/Nicho
 
 ![AddPackageFromGitURL](Images~/AddPackageFromGitURL.PNG)
 
-`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.4`
+`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.5`
 
 <h2 align="center">Unity 2018.3 or later (Using Unity Package Manager)</h2>
 
@@ -50,7 +50,7 @@ Add this to the projects `manifest.json`
 
 To update the package, change suffix `#{version}` to the target version.
 
-* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.4"`
+* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.5"`
 
 <h2 align="center">Unity 2018.3 or later (Using OpenUPM)</h2>
 

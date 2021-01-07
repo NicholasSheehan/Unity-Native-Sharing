@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.5] - 2021-01-07
+### Fixed
+- AAR `AndroidManifest.xml` now uses a custom file provider in order to stop conflicts with other plugins from the Unity asset store which also use the default file provider
+
 ## [1.0.4] - 2020-06-25
 ### Fixed
 - AAR `AndroidManifest.xml` now used the AndroidX file provider
