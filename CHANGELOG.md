@@ -4,7 +4,9 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.6] - 2021-03-09
+### Added
+- Added optional mime type parameter for Android to use in the intent rather than it being hardcoded to `image/*`
 
 ## [1.0.5] - 2021-01-07
 ### Fixed

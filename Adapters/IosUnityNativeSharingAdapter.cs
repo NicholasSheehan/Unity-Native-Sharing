@@ -10,7 +10,7 @@ namespace UnityNative.Sharing
         [System.Runtime.InteropServices.DllImport("__Internal")]
         private static extern void UnityNative_Sharing_ShareText(string shareText);
         
-        public void ShareScreenshotAndText(string shareText, string filePath, bool showShareDialogBox = true, string shareDialogBoxText = "Select App To Share With")
+        public void ShareScreenshotAndText(string shareText, string filePath, bool showShareDialogBox = true, string shareDialogBoxText = "Select App To Share With", string mimeType = "image/*")
         {
             UnityNative_Sharing_ShareTextAndScreenshot(shareText, filePath);
         }

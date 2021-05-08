@@ -33,11 +33,11 @@ namespace UnityNative.Sharing
             sharingJavaClass = new AndroidJavaClass(AndroidClass);
         }
         
-        public void ShareScreenshotAndText(string shareText, string filePath, bool showShareDialogBox = true, string shareDialogBoxText = "Select App To Share With")
+        public void ShareScreenshotAndText(string shareText, string filePath, bool showShareDialogBox = true, string shareDialogBoxText = "Select App To Share With", string mimeType = "image/*")
         {
             AndroidJNI.AttachCurrentThread();
             
-            sharingJavaClass.CallStatic(ShareScreenshotWithTextMethodName, shareText, filePath, showShareDialogBox, shareDialogBoxText);
+            sharingJavaClass.CallStatic(ShareScreenshotWithTextMethodName, shareText, filePath, showShareDialogBox, shareDialogBoxText, mimeType);
         }
 
         public void ShareText(string shareText, bool showShareDialogBox = true, string shareDialogBoxText = "Select App To Share With")

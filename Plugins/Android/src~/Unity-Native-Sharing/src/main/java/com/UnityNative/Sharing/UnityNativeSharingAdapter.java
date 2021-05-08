@@ -24,14 +24,15 @@ public class UnityNativeSharingAdapter {
      * @param imagePath          - Path to the file to share
      * @param showShareDialog    - Should the share dialog be opened
      * @param shareDialogBoxText - Title of the share dialog
+     * @param mimeType           - Mime type of the file being shared
      */
     @Keep
-    public static void ShareScreenshotAndText(String shareText, String imagePath, boolean showShareDialog, String shareDialogBoxText) {
+    public static void ShareScreenshotAndText(String shareText, String imagePath, boolean showShareDialog, String shareDialogBoxText, String mimeType) {
 
         //Generate the intent
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.setType("image/*");
+        intent.setType(mimeType);
         intent.putExtra(Intent.EXTRA_TEXT, shareText);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
