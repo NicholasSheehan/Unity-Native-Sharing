@@ -1,9 +1,9 @@
 {
   "name": "com.unitynative.sharing",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "displayName": "Unity-Native-Sharing",
   "description": "A Unity plugin to open native sharing dialogs on iOS and Android",
-  "unity": "2018.3",
+  "unity": "2018.4",
   "dependencies": {
     "com.unity.modules.screencapture": "1.0.0",
     "com.unity.modules.imageconversion": "1.0.0"

@@ -34,11 +34,13 @@ Examples can be found at [Unity-Native-Example-Project](https://github.com/Nicho
 
 <h1 align="center">🛠️ Installation 🛠️</h1>
 
+This was built and tested in Unity 2018.4 LTS, but should still work down to Unity 2018.2
+
 <h2 align="center">Unity 2019.3 or later (Using Unity Package Manager)</h2>
 
 ![AddPackageFromGitURL](Images~/AddPackageFromGitURL.PNG)
 
-`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.6`
+`https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.7`
 
 <h2 align="center">Unity 2018.3 or later (Using Unity Package Manager)</h2>
 
@@ -50,7 +52,7 @@ Add this to the projects `manifest.json`
 
 To update the package, change suffix `#{version}` to the target version.
 
-* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.6"`
+* e.g. `"com.unitynative.sharing" : "https://github.com/NicholasSheehan/Unity-Native-Sharing.git#v1.0.7"`
 
 <h2 align="center">Unity 2018.3 or later (Using OpenUPM)</h2>
 
